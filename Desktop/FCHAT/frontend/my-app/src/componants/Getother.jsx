@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const Getother = () => {
  const navigate=useNavigate();
     const[user,setuser]=useState([])
-    const dispatch = useDispatch(); // you missed this line!
+    const dispatch = useDispatch();
 
     const handlesubmit=async (ev)=>{
          ev.preventDefault();
