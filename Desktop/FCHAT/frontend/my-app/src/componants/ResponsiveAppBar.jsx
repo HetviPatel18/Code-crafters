@@ -50,9 +50,10 @@ function ResponsiveAppBar() {
   const logout=()=>{
     try{
 const res=axios.get("http://localhost:5000/api/v1/user/logout",{  withCredentials: true});
-toast.success(res.data);
+toast.success("you logout");
 navigate("/login")
     }catch(err){
+      toast.error("not logout pls try again ....")
       console.log(err)
     }
   }

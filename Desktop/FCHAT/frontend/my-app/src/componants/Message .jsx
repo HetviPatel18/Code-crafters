@@ -1,11 +1,46 @@
-import React from 'react'
-
+import axios from 'axios'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useState } from 'react'
 const Message  = () => {
+  const [messages, setMessages] = useState([]);
+  const data=useSelector((state)=>{return state.user.selected})
+  useEffect(() => {
+    const fetchmsg = async () => {
+      if (!data?._id) {
+        console.log("⏳ Waiting for user selection...");
+        return;
+      }
+
+      try {
+        axios.defaults.withCredentials = true;
+        const res = await axios.get(
+          `http://localhost:5000/api/v1/message/${data._id}`
+        );
+        console.log("✅ Messages fetched:", res.data);
+        const massage=res.data;
+         setMessages(res.data.messages);
+      } catch (err) {
+        console.log("❌ Error from Message:", err);
+      }
+    };
+
+    fetchmsg();
+  }, [data]);
   return (
     <div>
         <h2> this msg box............</h2>
-        <div className="chat chat-start">
-  <div className="chat-bubble chat-bubble-primary">What kind of nonsense is this</div>
+        
+      {messages.map((msg, idx) => (
+        <div
+          key={idx}
+         // className={`chat ${msg.senderid === senderId ? 'chat-end' : 'chat-start'}`}
+        >
+          <div className="chat-bubble chat-bubble-primary">{msg}</div>
+        </div>
+      ))}
+        {/* <div className="chat chat-start">
+  <div className="chat-bubble chat-bubble-primary">{}</div>
 </div>
 <div className="chat chat-start">
   <div className="chat-bubble chat-bubble-secondary">
@@ -31,7 +66,7 @@ const Message  = () => {
 </div>
 <div className="chat chat-end">
   <div className="chat-bubble chat-bubble-error">It's never happened before.</div>
-</div>
+</div> */}
      
     </div>
   )

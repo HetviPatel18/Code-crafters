@@ -43,6 +43,8 @@ const getmessage=async(req,res)=>{//nakho receiverid
 
         const senderid=req.id;
                 const receiverid=req.params.id;
+                  console.log("senderid:", senderid);
+    console.log("receiverid:", receiverid);
                // const{message}=req.body;
 
 //                 const conversation=await Conversation.findOne({participants:{$all:[senderid,receiverid]}}).populate({
@@ -50,7 +52,13 @@ const getmessage=async(req,res)=>{//nakho receiverid
 //   model: "Message"
 // }).exec(); 
                 const conversation=await Conversation.findOne({participants:{$all:[senderid,receiverid]}}).populate("message");
-console.log("in get msg")
+console.log("in get msg") 
+    if (!conversation) {
+      return res.status(404).json({
+        success: false,
+        message: "Conversation not found"
+      });
+    }
           console.log(conversation.message)
            const messageTexts = conversation.message.map(msg => msg.message);
 
@@ -63,7 +71,7 @@ console.log("in get msg")
 });
                 
 
-    }catch(err){console.log(err)}
+    }catch(err){console.log("err from get msg route",err)}
  }
 
  module.exports={sendmessage,getmessage};

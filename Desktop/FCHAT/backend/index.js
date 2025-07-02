@@ -19,7 +19,7 @@ app.use(express.json());//
 app.use(cookieParser())//http://localhost:5000/api/v1/message/send/68597df94e25e8dc4ecf5a51
 app.use("/api/v1/user",userroute)//http://localhost:5000/api/v1/user/login
 app.use("/api/v1/message",messageroute)//http://localhost:5000/api/v1/message/send/:id
-
+//http://localhost:5000/api/v1/message/:id
 app.get('/', (req, res) => {
   res.send('Qonnect backend is running 🚀');
 });
