@@ -2,16 +2,37 @@ import axios from 'axios';
 import React from 'react'
 import { useState } from 'react';
 import { useStore } from 'react-redux';
+// import  { useEffect } from 'react'
 import User from './User';
 import { useDispatch } from 'react-redux';
 import { getuser } from '../redux/userslice';
 import Message from './Message ';
 import { useNavigate } from 'react-router-dom';
-const Getother = () => {
+import { useSelector } from 'react-redux'
+const Getother = () => {   const data=useSelector((state)=>{return state.user.selected})
  const navigate=useNavigate();
     const[user,setuser]=useState([])
+    const [message,setmsg]=useState([])
     const dispatch = useDispatch();
+const send= async(ev)=>{
+         ev.preventDefault();
+        //  alert(msg);
+         try{
+         const res = await axios.post(
+  `http://localhost:5000/api/v1/message/send/${data._id}`,
+  { message: message },  // 👈 make sure 'content' matches backend key
+  {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    withCredentials: true
+  }
+);
 
+        console.log("res from send msg",res)
+         }catch(err){console.log("er from senduing ",err)}
+
+         }
     const handlesubmit=async (ev)=>{
          ev.preventDefault();
          try{ axios.defaults.withCredentials = true;
@@ -35,6 +56,7 @@ const Getother = () => {
     //   toast.error("Something went wrong.");
     // }
          }
+        
       
 
         
@@ -69,7 +91,8 @@ const Getother = () => {
     marginBottom: '10px'
   }}>
     <h1>Messages</h1>
-    <Message />  <Message />  
+  <Message messages={message} />
+  <Message />  
     
   </div>
 
@@ -85,12 +108,21 @@ const Getother = () => {
         outline: 'none'
       }}
     /> */}<div className="mt-auto w-full p-3 flex items-center gap-2 bg-base-200">
-  <input
-    type="text"
+ 
+  <form onSubmit={send} style={{
+      display: 'flex',
+      gap: '10px',
+      width:"1200px",
+      alignItems: 'center',
+      backgroundColor: '#2980b9',
+      padding: '10px',
+      borderRadius: '5px'
+    }}> <input
+    type="text" value={message} onChange={(ev)=>{ console.log(ev.target.value);return setmsg(ev.target.value)}}
     placeholder="Type your message..."
     className="input input-bordered w-full"
-  />
-  <button className="btn btn-primary">Send</button>
+  /><button  className="btn btn-primary">Send</button></form>
+  
 </div>
   </div>
 </div>
