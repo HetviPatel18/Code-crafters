@@ -33,7 +33,7 @@ const Message = require("../models/messagemodel");
                 }
                 console.log(pastconversation)
                 await pastconversation.save()//after  pushing save it  
-                return res.status(201).json({message:"you sent msg succesfullt to ",data: newmsg})
+                return res.status(201).json({message:"you sent msg succesfullt to ", newmsg})
                 
 
     }catch(err){console.log(err)}
@@ -56,18 +56,22 @@ console.log("in get msg")
     if (!conversation) {
       return res.status(404).json({
         success: false,
-        message: "Conversation not found"
+        message: "Conversation not found",
+
       });
     }
           console.log(conversation.message)
-           const messageTexts = conversation.message.map(msg => msg.message);
+    //        const messageTexts = conversation.message.map(msg => msg.message);
 
-    console.log("Only messages:", messageTexts);
+    // console.log("Only messages:", messageTexts);
 
 
                return res.status(200).json({
   success: true,
-  messages: messageTexts
+    messages: conversation.message
+  // messages: messageTexts,
+  // senderid
+
 });
                 
 

@@ -4,8 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { logined } from '../redux/userslice';
 
 const Login = () => {
+  const dispatch=useDispatch();
    const navigate = useNavigate();
   const [fdata, setfdata] = useState({username:"",password:""})
  function handle(ev){
@@ -24,6 +27,8 @@ async function handleSubmit(ev) {
         console.log("res is ",res)
 if(res.data.success){  toast.success("Login successful!");
   navigate("/get");
+  console.log(" 30 from from LOGIN ",res.data.id)
+ dispatch(logined(res.data.id));
 }
  }
  catch(err){console.log(err)

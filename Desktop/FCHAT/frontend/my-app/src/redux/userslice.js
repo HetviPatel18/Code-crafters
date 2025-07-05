@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   setauth:null,
   getuserr:null,
-  selected:null
+  selected:null,
+  logindata:null
 }
 
 export const userslice = createSlice({
@@ -18,11 +19,15 @@ state.getuserr=action.payload
    },
    selecteduser(state,action){
 state.selected=action.payload;
+   },
+   logined(state,action){
+      state.logindata=action.payload;
+
    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setauthuser, getuser,selecteduser} = userslice.actions;
+export const { setauthuser, getuser,selecteduser,logined} = userslice.actions;
 
 export default userslice.reducer

@@ -91,7 +91,7 @@ const send= async(ev)=>{
     marginBottom: '10px'
   }}>
     <h1>Messages</h1>
-  <Message messages={message} />
+
   <Message />  
     
   </div>
