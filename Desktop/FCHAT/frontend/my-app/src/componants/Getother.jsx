@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react'
 import { useState } from 'react';
 import { useStore } from 'react-redux';
+import { useEffect } from 'react';
 // import  { useEffect } from 'react'
 import User from './User';
 import { useDispatch } from 'react-redux';
@@ -9,30 +10,14 @@ import { getuser } from '../redux/userslice';
 import Message from './Message ';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux'
-const Getother = () => {   const data=useSelector((state)=>{return state.user.selected})
+const Getother = () => {  
+    const [messages, setMessages] = useState([]);
+  const data=useSelector((state)=>{return state.user.selected})
  const navigate=useNavigate();
     const[user,setuser]=useState([])
     const [message,setmsg]=useState([])
     const dispatch = useDispatch();
-const send= async(ev)=>{
-         ev.preventDefault();
-        //  alert(msg);
-         try{
-         const res = await axios.post(
-  `http://localhost:5000/api/v1/message/send/${data._id}`,
-  { message: message },  // 👈 make sure 'content' matches backend key
-  {
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    withCredentials: true
-  }
-);
 
-        console.log("res from send msg",res)
-         }catch(err){console.log("er from senduing ",err)}
-
-         }
     const handlesubmit=async (ev)=>{
          ev.preventDefault();
          try{ axios.defaults.withCredentials = true;
@@ -61,6 +46,55 @@ const send= async(ev)=>{
 
         
     }
+   
+    const fetchmsg = async () => {
+      if (!data?._id) {
+        console.log("⏳ Waiting for user selection...");
+        return;
+      }
+
+      try {
+        axios.defaults.withCredentials = true;
+        const res = await axios.get(
+          `http://localhost:5000/api/v1/message/${data._id}`
+        );
+        console.log("✅ Messages fetched:", res.data);
+        const massage=res;
+        console.log(messages)
+        console.log("res from 25 ",res);//line 25
+         setMessages(res.data.messages);
+          console.log(" line 26 from Message comp senderid",loginid,"reciver is ",data._id)
+      } catch (err) {
+        console.log("❌ Error from Message:", err);
+      }
+    };
+
+useEffect(() => {
+  fetchmsg();
+}, [data]);
+
+
+  const send= async(ev)=>{
+         ev.preventDefault();
+        //  alert(msg);
+         try{
+         const res = await axios.post(
+  `http://localhost:5000/api/v1/message/send/${data._id}`,
+  { message: message },  // 👈 make sure 'content' matches backend key
+  {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    withCredentials: true
+  }
+);
+
+        console.log("res from send msg",res)
+         setmsg("");        // Clear input
+      fetchmsg(); 
+         }catch(err){console.log("er from senduing ",err)}
+
+         }
   return (
     <div>
       other useres
@@ -92,7 +126,7 @@ const send= async(ev)=>{
   }}>
     <h1>Messages</h1>
 
-  <Message />  
+<Message messages={messages} />  
     
   </div>
 
