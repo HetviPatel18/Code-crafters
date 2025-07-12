@@ -1,0 +1,51 @@
+* { box-sizing: border-box; }
+.App {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0 10px;
+  background: #f4f4f4;
+}
+h1, h2 { font-family: Arial, sans-serif; margin: 10px 0; }
+form {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+input[type="text"], button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+button {
+  background: #00bcd4;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+button:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+}
+button:hover:not(:disabled) {
+  background: #0097a7;
+}
+#profilesList > div {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
